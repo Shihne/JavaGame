@@ -22,6 +22,7 @@ function init() {
     ctx.fillRect(0, 0, 100, 100); // координаты левого верхнего угла, высота и ширина
     ctx.strokeStyle = "blue";
     ctx.strokeRect(10.5, 10.5, 100, 100); // прямоугольник по границе
+
     /*
     Почему толщина 2 пикселя?
     Закращиваются по половне пикселя на решётке, визуально должно казаться, что пиксель один.
@@ -44,7 +45,6 @@ function init() {
     ctx.closePath(); //провести карандаш в начало путь. Это можно не делать.
     ctx.fill();
     ctx.stroke();
-
     //теперь давайте нарисуем хитрую форму
     ctx.beginPath();
     ctx.arc(200, 200, 50, 0, Math.PI * 1.2);
@@ -61,6 +61,7 @@ function init() {
     ctx.quadraticCurveTo(125,100,125,62.5);
     ctx.quadraticCurveTo(125,25,75,25);
     ctx.stroke();
+
 
     for(var i=0; i < 255; i++) {
         ctx.fillStyle = "rgb(" + i + "," + i + "," + i +")";

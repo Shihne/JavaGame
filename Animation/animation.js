@@ -15,14 +15,19 @@ function init() {
     var canvas = document.getElementById("game");
     var ctx = canvas.getContext('2d');
     var last_redraw_time = get_time();
-    var x = 320;
-    var y = 240;
+    var x1 = 320;
+    var y1 = 240;
+    var x2 = 345;
+    var y2 = 324;
     var v = 80;
     //var SPEED_x = 50;
     //var SPEED_y = 40;
-    var alpha = Math.random() * 2 * Math.PI; // не более 180
-    var SPEED_x = Math.cos(alpha) * v;
-    var SPEED_y = Math.cos(alpha) * v;
+    var alpha1 = Math.random() * 2 * Math.PI;
+    var alpha2 = Math.random() * 2 * Math.PI;// не более 180
+    var dx1 = Math.cos(alpha1) * v;
+    var dy1 = Math.cos(alpha1) * v;
+    var dx2 = Math.cos(alpha2) * v;
+    var dy2 = Math.cos(alpha2) * v;
     requestAnimationFrame(animation_step());
 
     function draw() {
@@ -33,10 +38,15 @@ function init() {
         ctx.fillStyle = "#2BA2C0";
         ctx.fillRect(50, 50, 540, 380);
         ctx.strokeStyle = "black";
-        ctx.strokeRect(50.5, 50.5, 540, 380)
+        ctx.strokeRect(50.5, 50.5, 540, 380);
 
         ctx.beginPath();
-        ctx.arc(x, y, 40, 0, Math.PI * 2);
+        ctx.arc(x1, y1, 40, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(230, 1, 77, 0.5)";
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(x2, y2, 40, 0, Math.PI * 2);
         ctx.fillStyle = "rgba(230, 1, 77, 0.5)";
         ctx.fill();
     }
@@ -50,16 +60,24 @@ function init() {
 	    допустим, скорость изменения x - это SPEED_x.
 	    для определенности SPEED_x = 10 пикселей в секунду */
         //if (x >= 550 || x <= 90 || y >= 390 || y <= 90)
-        if (x >= 550 || x <= 90) {
-            SPEED_x = SPEED_x * (-1);
+        if (x1 >= 550 || x1 <= 90) {
+            dx1 = dx1 * (-1);
             // SPEED_y = SPEED_y * Math.cos(alpha);
         }
-        if (y >= 390 || y <= 90) {
-            SPEED_y = SPEED_y * (-1);
+        if (x2 >= 550 || x2 <= 90) {
+            dx2 = dx2 * (-1)
+        }
+        if (y1 >= 390 || y1 <= 90) {
+            dy1 = dy1 * (-1);
             // SPEED_x = SPEED_x * Math.cos(alpha);
         }
-        x += SPEED_x * elapsed_time_sec;
-        y += SPEED_y * elapsed_time_sec;
+        if (y2 >= 390 || y2 <= 90) {
+            dy2 = dy2 * (-1)
+        }
+        x1 += dx1 * elapsed_time_sec;
+        y1 += dy1 * elapsed_time_sec;
+        x2 += dx2 * elapsed_time_sec;
+        y2 += dy2 * elapsed_time_sec;
     }
 
     function animation_step() {

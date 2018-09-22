@@ -17,8 +17,12 @@ function init() {
     var last_redraw_time = get_time();
     var x = 320;
     var y = 240;
-    var SPEED_x = 50;
-    var SPEED_y = 40;
+    var v = 80;
+    //var SPEED_x = 50;
+    //var SPEED_y = 40;
+    var alpha = Math.random() * 2 * Math.PI; // не более 180
+    var SPEED_x = Math.cos(alpha) * v;
+    var SPEED_y = Math.cos(alpha) * v;
     requestAnimationFrame(animation_step());
 
     function draw() {
@@ -32,7 +36,7 @@ function init() {
         ctx.strokeRect(50.5, 50.5, 540, 380)
 
         ctx.beginPath();
-        ctx.arc(x, y, 40, 0, Math.PI * 2, true);
+        ctx.arc(x, y, 40, 0, Math.PI * 2);
         ctx.fillStyle = "rgba(230, 1, 77, 0.5)";
         ctx.fill();
     }
@@ -46,12 +50,14 @@ function init() {
 	    допустим, скорость изменения x - это SPEED_x.
 	    для определенности SPEED_x = 10 пикселей в секунду */
         //if (x >= 550 || x <= 90 || y >= 390 || y <= 90)
-        if (x >= 550 || x <= 90)
+        if (x >= 550 || x <= 90) {
             SPEED_x = SPEED_x * (-1);
-
-        if (y >= 390 || y <= 90)
+            // SPEED_y = SPEED_y * Math.cos(alpha);
+        }
+        if (y >= 390 || y <= 90) {
             SPEED_y = SPEED_y * (-1);
-
+            // SPEED_x = SPEED_x * Math.cos(alpha);
+        }
         x += SPEED_x * elapsed_time_sec;
         y += SPEED_y * elapsed_time_sec;
     }

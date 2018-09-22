@@ -17,8 +17,8 @@ function init() {
     var last_redraw_time = get_time();
     var x = 320;
     var y = 240;
-    var SPEED_x = 30;
-    var SPEED_y = 20;
+    var SPEED_x = 50;
+    var SPEED_y = 40;
     requestAnimationFrame(animation_step());
 
     function draw() {
@@ -32,7 +32,7 @@ function init() {
         ctx.strokeRect(50.5, 50.5, 540, 380)
 
         ctx.beginPath();
-        ctx.arc(x, y, 50, 0, Math.PI * 2, true);
+        ctx.arc(x, y, 40, 0, Math.PI * 2, true);
         ctx.fillStyle = "rgba(230, 1, 77, 0.5)";
         ctx.fill();
     }
@@ -45,6 +45,13 @@ function init() {
         обновить параметры, зная прошедшее время.
 	    допустим, скорость изменения x - это SPEED_x.
 	    для определенности SPEED_x = 10 пикселей в секунду */
+        //if (x >= 550 || x <= 90 || y >= 390 || y <= 90)
+        if (x >= 550 || x <= 90)
+            SPEED_x = SPEED_x * (-1);
+
+        if (y >= 390 || y <= 90)
+            SPEED_y = SPEED_y * (-1);
+
         x += SPEED_x * elapsed_time_sec;
         y += SPEED_y * elapsed_time_sec;
     }

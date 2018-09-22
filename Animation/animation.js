@@ -69,26 +69,44 @@ function init() {
 	    для определенности SPEED_x = 10 пикселей в секунду */
         //if (x >= 550 || x <= 90 || y >= 390 || y <= 90)
 
-        if (x1 >= 550 || x1 <= 90)
+        /*if (x1 >= 550 || x1 <= 90)
             dx1 = dx1 * (-1);
-        if (y1 >= 390 || y1 <= 90)
-            dy1 = dy1 * (-1);
-        x1 += dx1 * elapsed_time_sec;
-        y1 += dy1 * elapsed_time_sec;
-
         if (x2 >= 550 || x2 <= 90)
             dx2 = dx2 * (-1);
+        if (x3 >= 550 || x3 <= 90)
+            dx3 = dx3 * (-1);*/
+        dx1 = uapx(x1, dx1);
+        dx2 = uapx(x2, dx2);
+        dx3 = uapx(x3, dx3);
+
+        /*if (y1 >= 390 || y1 <= 90)
+            dy1 = dy1 * (-1);
         if (y2 >= 390 || y2 <= 90)
             dy2 = dy2 * (-1);
-        x2 += dx2 * elapsed_time_sec;
-        y2 += dy2 * elapsed_time_sec;
-
-        if (x3 >= 550 || x3 <= 90)
-            dx3 = dx3 * (-1);
         if (y3 >= 390 || y3 <= 90)
-            dy3 = dy3 * (-1);
+            dy3 = dy3 * (-1);*/
+        dy1 = uapy(y1, dy1);
+        dy2 = uapy(y2, dy2);
+        dy3 = uapy(y3, dy3);
+
+        x1 += dx1 * elapsed_time_sec;
+        x2 += dx2 * elapsed_time_sec;
         x3 += dx3 * elapsed_time_sec;
+
+        y1 += dy1 * elapsed_time_sec;
+        y2 += dy2 * elapsed_time_sec;
         y3 += dy3 * elapsed_time_sec;
+    }
+
+    function uapx(x, dx) {
+        if (x >= 550 || x <= 90)
+            dx = dx * (-1);
+        return dx;
+    }
+    function uapy(y, dy) {
+        if (y >= 390 || y <= 90)
+            dy = dy * (-1);
+        return dy;
     }
 
     function animation_step() {

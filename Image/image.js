@@ -1,10 +1,43 @@
 function init() {
 
+
+    var animation_start_time = get_time() / 1000;
+    var last_redraw_time = get_time;
     var canvas = document.getElementById("game");
     var ctx = canvas.getContext('2d');
-    var img = document.getElementById("a-img");
+    var aimg = document.getElementById("a-img");
+    var dimg = document.getElementById("d-img");
+    var frame_index = 0;
+    var FPS = 15;
+    var num_frames = 5;
+    animation_step();
 
-    ctx.drawImage(img, 10, 10);
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(aimg, 0, 0);
+        ctx.drawImage(dimg, 1280 / 5 * frame_index, 0, 1280 / 5, 748 / 3, 150, 50, 1280 / 5, 748 / 3);
+    }
+
+    function update_animation_parameters(elapsed_time_sec, current_time_sec) {
+        frame_index = Math.floor((current_time_sec - animation_start_time) * FPS) % num_frames;
+    }
+
+    function animation_step() {
+        //эта функция должна постоянно вызываться
+        requestAnimationFrame(animation_step); //сразу просим повторить
+        var current_time = get_time();
+        var elapsed_time = current_time - last_redraw_time;
+        last_redraw_time = current_time;
+
+        update_animation_parameters(elapsed_time / 1000, current_time / 1000);
+        draw();
+    }
+
+    function get_time() {
+        //return Date.now();
+        return new Date().getTime();
+    }
+
     /*Использование изображений
     https://developer.mozilla.org/ru/docs/Web/API/Canvas_API/Tutorial/%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5_%D0%B8%D0%B7%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%B8%D0%B9
 

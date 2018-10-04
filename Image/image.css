@@ -3,9 +3,6 @@
     margin: 1cm auto;
     border: 1px solid black;
 }
-#a-img {
-    display: none;
-}
-#d-img {
+img {
     display: none;
 }

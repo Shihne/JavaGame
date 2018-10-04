@@ -7,6 +7,7 @@ function init() {
     var ctx = canvas.getContext('2d');
     var aimg = document.getElementById("a-img");
     var dimg = document.getElementById("d-img");
+    var bimg = document.getElementById("b-img");
     var frame_index = 0;
     var FPS = 15;
     var num_frames = 15;

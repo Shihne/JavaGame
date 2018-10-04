@@ -16,7 +16,7 @@ function init() {
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(aimg, 0, 0);
-        ctx.drawImage(dimg, 1280 / 5 * frame_index, 748 / 3 * str_index, 1280 / 5, 748 / 3, 150, 50, 1280 / 5, 748 / 3);
+        ctx.drawImage(dimg, 1280 / 5 * frame_index, 747 / 3 * str_index, 1280 / 5, 748 / 3, 150, 50, 1280 / 5, 748 / 3);
     }
 
     function update_animation_parameters(elapsed_time_sec, current_time_sec) {

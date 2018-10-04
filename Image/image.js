@@ -9,17 +9,28 @@ function init() {
     var dimg = document.getElementById("d-img");
     var frame_index = 0;
     var FPS = 15;
-    var num_frames = 5;
+    var num_frames = 15;
+    var str_index = 0;
     animation_step();
 
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(aimg, 0, 0);
-        ctx.drawImage(dimg, 1280 / 5 * frame_index, 0, 1280 / 5, 748 / 3, 150, 50, 1280 / 5, 748 / 3);
+        ctx.drawImage(dimg, 1280 / 5 * frame_index, 748 / 3 * str_index, 1280 / 5, 748 / 3, 150, 50, 1280 / 5, 748 / 3);
     }
 
     function update_animation_parameters(elapsed_time_sec, current_time_sec) {
         frame_index = Math.floor((current_time_sec - animation_start_time) * FPS) % num_frames;
+        if (frame_index >= 10) {
+            frame_index = frame_index - 10;
+            str_index = 2;
+        } else if (frame_index >= 5) {
+            frame_index = frame_index - 5;
+            str_index = 1;
+        } else {
+            str_index = 0;
+        }
+
     }
 
     function animation_step() {

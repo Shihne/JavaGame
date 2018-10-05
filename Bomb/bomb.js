@@ -7,29 +7,44 @@ function init() {
     var ctx = canvas.getContext('2d');
     var aimg = document.getElementById("a-img");
     var dimg = document.getElementById("d-img");
-    var frame_index = 0;
+    var bomb = document.getElementById("bomb");
+    var frame_index_exp = 0;
     var FPS = 15;
-    var num_frames = 15;
-    var str_index = 0;
+    var num_frames_exp = 15;
+    var str_index_exp = 0;
+    var frame_index_bomb = 0;
+    var num_frames_bomb = 648;
+    var str_index_bomb = 0;
+
     animation_step();
 
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(aimg, 0, 0);
-        ctx.drawImage(dimg, 1280 / 5 * frame_index, 747 / 3 * str_index, 1280 / 5, 748 / 3, 150, 50, 1280 / 5, 748 / 3);
+        //ctx.drawImage(dimg, 1280 / 5 * frame_index_exp, 747 / 3 * str_index_exp, 1280 / 5, 748 / 3, 150, 50, 1280 / 5, 748 / 3);
+        ctx.drawImage(bomb, 100 * frame_index_bomb, 100 * str_index_bomb, 100, 100, 320, 240, 50, 50);
     }
 
     function update_animation_parameters(elapsed_time_sec, current_time_sec) {
-        frame_index = Math.floor((current_time_sec - animation_start_time) * FPS) % num_frames;
-        if (frame_index >= 10) {
-            frame_index = frame_index - 10;
-            str_index = 2;
-        } else if (frame_index >= 5) {
-            frame_index = frame_index - 5;
-            str_index = 1;
+        /*if (frame_index_exp >= 10) {
+            frame_index_exp = frame_index_exp - 10;
+            str_index_exp = 2;
+        } else if (frame_index_exp >= 5) {
+            frame_index_exp = frame_index_exp - 5;
+            str_index_exp = 1;
         } else {
-            str_index = 0;
-        }
+            str_index_exp = 0;
+        }*/
+
+        /*frame_index_exp = Math.floor((current_time_sec - animation_start_time) * FPS) % num_frames_exp;
+        str_index_exp = Math.floor(frame_index_exp / 5);
+        frame_index_exp = frame_index_exp - str_index_exp * 5;*/
+
+        frame_index_bomb = Math.floor((current_time_sec - animation_start_time) * FPS) % num_frames_bomb;
+        str_index_bomb = Math.floor(frame_index_bomb / 36);
+        frame_index_bomb = frame_index_bomb - 36 * str_index_bomb;
+
+
 
     }
 

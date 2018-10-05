@@ -39,11 +39,6 @@ function init() {
         dy: 100
     }];
 
-    for (var i = 0; i < balls.length; i++) {
-        var ball = balls[i];
-        ball.x += 1;
-    }
-
     animation_step();
 
 

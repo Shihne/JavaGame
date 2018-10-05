@@ -12,15 +12,40 @@ function init() {
     var FPS = 30;
     var num_frames_exp = 15;
     var str_index_exp = 0;
-    var frame_index_bomb = 0;
-    var num_frames_bomb = 648;
-    var str_index_bomb = 0;
-    var x_bomb = 320;
-    var y_bomb = 240;
-    var dx = 100;
-    var dy = 100;
+
+    var balls = [{
+        frame_index_bomb: 0,
+        num_frames_bomb: 648,
+        str_index_bomb: 0,
+        x_bomb: 220,
+        y_bomb: 520,
+        dx: 100,
+        dy: 100
+    }, {
+        frame_index_bomb: 0,
+        num_frames_bomb: 648,
+        str_index_bomb: 0,
+        x_bomb: 920,
+        y_bomb: 140,
+        dx: 100,
+        dy: 100
+    }, {
+        frame_index_bomb: 0,
+        num_frames_bomb: 648,
+        str_index_bomb: 0,
+        x_bomb: 420,
+        y_bomb: 260,
+        dx: -100,
+        dy: 100
+    }];
+
+    for (var i = 0; i < balls.length; i++) {
+        var ball = balls[i];
+        ball.x += 1;
+    }
 
     animation_step();
+
 
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -28,7 +53,9 @@ function init() {
         ctx.strokeRect(128.5, 128.5, 1023, 463);
         ctx.drawImage(aimg, 0, 0);
         //ctx.drawImage(dimg, 1280 / 5 * frame_index_exp, 747 / 3 * str_index_exp, 1280 / 5, 748 / 3, 150, 50, 1280 / 5, 748 / 3);
-        ctx.drawImage(bomb, 100 * frame_index_bomb, 100 * str_index_bomb, 100, 100, x_bomb, y_bomb, 50, 50);
+        for (var i = 0; i < balls.length; i++)
+            ctx.drawImage(bomb, 100 * balls[i].frame_index_bomb, 100 * balls[i].str_index_bomb, 100, 100, balls[i].x_bomb, balls[i].y_bomb, 50, 50);
+
     }
 
     function update_animation_parameters(elapsed_time_sec, current_time_sec) {
@@ -46,19 +73,19 @@ function init() {
         str_index_exp = Math.floor(frame_index_exp / 5);
         frame_index_exp = frame_index_exp - str_index_exp * 5;*/
 
-        frame_index_bomb = Math.floor((current_time_sec - animation_start_time) * FPS) % num_frames_bomb;
-        str_index_bomb = Math.floor(frame_index_bomb / 36);
-        frame_index_bomb = frame_index_bomb - 36 * str_index_bomb;
+        for (var i = 0; i < balls.length; i++) {
+            balls[i].frame_index_bomb = Math.floor((current_time_sec - animation_start_time) * FPS) % balls[i].num_frames_bomb;
+            balls[i].str_index_bomb = Math.floor(balls[i].frame_index_bomb / 36);
+            balls[i].frame_index_bomb = balls[i].frame_index_bomb - 36 * balls[i].str_index_bomb;
+            if (balls[i].x_bomb >= 1105.5 || balls[i].x_bomb <= 123.5)
+                balls[i].dx = balls[i].dx * (-1);
+            if (balls[i].y_bomb >= 545.5 || balls[i].y_bomb <= 123.5)
+                balls[i].dy = balls[i].dy * (-1);
+            balls[i].x_bomb += balls[i].dx * elapsed_time_sec;
+            balls[i].y_bomb += balls[i].dy * elapsed_time_sec;
+        }
 
-        if (x_bomb >= 1105.5 || x_bomb <= 123.5)
-            dx = dx * (-1);
-        if (y_bomb >= 545.5 || y_bomb <= 123.5)
-            dy = dy * (-1);
 
-
-        x_bomb += dx * elapsed_time_sec;
-        // console.log(dx, elapsed_time_sec, x_bomb);
-        y_bomb += dy * elapsed_time_sec;
     }
 
     function animation_step() {
@@ -76,4 +103,5 @@ function init() {
         //return Date.now();
         return new Date().getTime();
     }
+
 }

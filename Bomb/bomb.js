@@ -12,6 +12,12 @@ function init() {
     var FPS = 30;
     var num_frames_exp = 15;
     var str_index_exp = 0;
+    canvas.addEventListener('click', mouseMove, false);
+    var mouse = {
+        x: 8,
+        y: 37
+    };
+
 
     var balls = [{
         frame_index_bomb: 0,
@@ -40,6 +46,13 @@ function init() {
     }];
 
     animation_step();
+
+    function mouseMove(event) {
+        if (event.clientX - mouse.x <= 128 && event.clientY - mouse.y <= 128)
+            console.log("BAKA!");
+        else
+            console.log(event.clientX + " : " + event.clientY);
+    }
 
 
     function draw() {

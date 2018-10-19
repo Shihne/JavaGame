@@ -10,28 +10,6 @@ function init() {
     var bomb = document.getElementById("bomb");
     var bomb2 = new Image();
     bomb2.src = 'c.png';
-    var explosions = [{
-        frame_index: 0,
-        num_frames: 15,
-        str_index: 0,
-        x: 0,
-        y: 0,
-        start_time: 0
-    }, {
-        frame_index: 0,
-        num_frames: 15,
-        str_index: 0,
-        x: 0,
-        y: 0,
-        start_time: 0
-    }, {
-        frame_index: 0,
-        num_frames: 15,
-        str_index: 0,
-        x: 0,
-        y: 0,
-        start_time: 0
-    }];
     var FPS = 30;
     var canvasBeginX = 105;
     var canvasBeginY = 38;
@@ -44,34 +22,20 @@ function init() {
         y: 0
     };
 
-    var balls = [{
-        frame_index: 0,
-        num_frames: 648,
-        str_index: 0,
-        x: 220,
-        y: 520,
-        dx: 100,
-        dy: -100,
-        exploded: false
-    }, {
-        frame_index: 0,
-        num_frames: 648,
-        str_index: 0,
-        x: 920,
-        y: 140,
-        dx: 100,
-        dy: 100,
-        exploded: false
-    }, {
-        frame_index: 0,
-        num_frames: 648,
-        str_index: 0,
-        x: 420,
-        y: 260,
-        dx: -100,
-        dy: 100,
-        exploded: false
-    }];
+    function new_ball(x, y, dx, dy) {
+        return {
+            frame_index: 0,
+            num_frames: 648,
+            str_index: 0,
+            x: x,
+            y: y,
+            dx: dx,
+            dy: dy,
+            exploded: false
+        };
+    }
+
+    var balls = [new_ball(220, 520, 100, -100), new_ball(520, 140, 100, 100), new_ball(420, 260, -100, 100)];
 
     animation_step();
 
@@ -86,12 +50,16 @@ function init() {
         for (var i = 0; i < balls.length; i++)
             if (mouse.x >= balls[i].x && mouse.x <= balls[i].x + 50 && mouse.y >= balls[i].y && mouse.y <= balls[i].y + 50) {
                 balls[i].exploded = true;
-                explosions[i].start_time = get_time() / 1000;
+                balls[i].num_frames = 15;
+                balls[i].start_time = get_time() / 1000;
                 console.log(true);
                 return;
             }
 
-
+        if (mouse.x <= beginXY || mouse.y <= beginXY || mouse.x >= 1280 - beginXY || mouse.y >= 720 - beginXY)
+            console.log("BAKA!!");
+        else
+            balls.push(new_ball(mouse.x, mouse.y, 100, 100));
 
         console.log((event.pageX - canvasBeginX) + " : " + (event.pageY - canvasBeginY));
     }
@@ -101,47 +69,40 @@ function init() {
         ctx.strokeStyle = "black";
         ctx.strokeRect(beginXY, beginXY, endX, endY);
         ctx.drawImage(aimg, 0, 0);
-        //ctx.drawImage(dimg, 1280 / 5 * frame_index_exp, 747 / 3 * str_index_exp, 1280 / 5, 748 / 3, 150, 50, 1280 / 5, 748 / 3);
+
         for (var i = 0; i < balls.length; i++) {
             if (balls[i].exploded === false) {
                 balls[i].str_index = Math.floor(balls[i].frame_index / 36);
                 balls[i].frame_index = balls[i].frame_index - 36 * balls[i].str_index;
                 ctx.drawImage(bomb, 100 * balls[i].frame_index, 100 * balls[i].str_index, 100, 100, balls[i].x, balls[i].y, 50, 50);
             } else {
-                ctx.drawImage(dimg, 1280 / 5 * explosions[i].frame_index, 747 / 3 * explosions[i].str_index, 1280 / 5, 748 / 3, balls[i].x, balls[i].y - 25, 256 / 4, 249 / 4);
+                ctx.drawImage(dimg, 1280 / 5 * balls[i].frame_index, 747 / 3 * balls[i].str_index, 1280 / 5, 748 / 3, balls[i].x, balls[i].y - 25, 256 / 4, 249 / 4);
             }
         }
     }
 
     function update_animation_parameters(elapsed_time_sec, current_time_sec) {
-        /*if (frame_index_exp >= 10) {
-            frame_index_exp = frame_index_exp - 10;
-            str_index_exp = 2;
-        } else if (frame_index_exp >= 5) {
-            frame_index_exp = frame_index_exp - 5;
-            str_index_exp = 1;
-        } else {
-            str_index_exp = 0;
-        }*/
-
-        /*frame_index_exp = Math.floor((current_time_sec - animation_start_time) * FPS) % num_frames_exp;
-        str_index_exp = Math.floor(frame_index_exp / 5);
-        frame_index_exp = frame_index_exp - str_index_exp * 5;*/
-
         for (var i = 0; i < balls.length; i++) {
-            if (balls[i].exploded === false) {
-                balls[i].frame_index = Math.floor((current_time_sec - animation_start_time) * FPS) % balls[i].num_frames;
+            var ball = balls[i];
 
-                if (balls[i].x >= 1105.5 || balls[i].x <= 123.5)
-                    balls[i].dx = balls[i].dx * (-1);
-                if (balls[i].y >= 545.5 || balls[i].y <= 123.5)
-                    balls[i].dy = balls[i].dy * (-1);
-                balls[i].x += balls[i].dx * elapsed_time_sec;
-                balls[i].y += balls[i].dy * elapsed_time_sec;
+            if (ball.exploded === false) {
+                ball.frame_index = Math.floor((current_time_sec - animation_start_time) * FPS) % ball.num_frames;
+
+                if (ball.x >= 1105.5 || ball.x <= 123.5)
+                    ball.dx = ball.dx * (-1);
+                if (ball.y >= 545.5 || ball.y <= 123.5)
+                    ball.dy = ball.dy * (-1);
+                ball.x += ball.dx * elapsed_time_sec;
+                ball.y += ball.dy * elapsed_time_sec;
             } else {
-                explosions[i].frame_index = Math.floor((current_time_sec - explosions[i].start_time) * FPS);
-                explosions[i].str_index = Math.floor(explosions[i].frame_index / 5);
-                explosions[i].frame_index = explosions[i].frame_index - explosions[i].str_index * 5;
+                ball.frame_index = Math.floor((current_time_sec - ball.start_time) * FPS);
+
+                if (ball.frame_index > 15)
+                    balls.splice(i, 1);
+                else {
+                    ball.str_index = Math.floor(ball.frame_index / 5);
+                    ball.frame_index = ball.frame_index - ball.str_index * 5;
+                }
             }
         }
     }

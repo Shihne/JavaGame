@@ -8,6 +8,8 @@ function init() {
     var aimg = document.getElementById("a-img");
     var dimg = document.getElementById("d-img");
     var bomb = document.getElementById("bomb");
+    var bomb2 = new Image();
+    bomb2.src = 'c.png';
     var explosions = [{
         frame_index: 0,
         num_frames: 15,
@@ -86,10 +88,11 @@ function init() {
                 balls[i].exploded = true;
                 explosions[i].start_time = get_time() / 1000;
                 console.log(true);
+                return;
             }
 
-        if (mouse.x <= beginXY || mouse.y <= beginXY || mouse.x >= 1280 - beginXY || mouse.y >= 720 - beginXY)
-            console.log("BAKA!!");
+
+
         console.log((event.pageX - canvasBeginX) + " : " + (event.pageY - canvasBeginY));
     }
 

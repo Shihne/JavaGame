@@ -8,8 +8,6 @@ function init() {
     var aimg = document.getElementById("a-img");
     var dimg = document.getElementById("d-img");
     var bomb = document.getElementById("bomb");
-    var bomb2 = new Image();
-    bomb2.src = 'c.png';
     var FPS = 30;
     var canvasBeginX = 105;
     var canvasBeginY = 38;
@@ -48,7 +46,8 @@ function init() {
         mouse.y = event.clientY - rect.top; // event.pageY - canvasBeginY;
 
         for (var i = 0; i < balls.length; i++)
-            if (mouse.x >= balls[i].x && mouse.x <= balls[i].x + 50 && mouse.y >= balls[i].y && mouse.y <= balls[i].y + 50) {
+            if (mouse.x >= balls[i].x && mouse.x <= balls[i].x + 50 && mouse.y >= balls[i].y && mouse.y <= balls[i].y + 50
+            && balls[i].exploded === false) {
                 balls[i].exploded = true;
                 balls[i].num_frames = 15;
                 balls[i].start_time = get_time() / 1000;
@@ -62,7 +61,7 @@ function init() {
             balls.push(new_ball(mouse.x, mouse.y, 100, 100));
         else if (mouse.x <= beginXY + (endX - beginXY) / 2 && mouse.y > beginXY + (endY - beginXY) / 2)
             balls.push(new_ball(mouse.x, mouse.y - 50, 100, -100));
-        else if (mouse.x > beginXY + (endX - beginXY) / 2 && mouse.y <= beginXY + (endY - beginXY) / 2)
+        else if (mouse.y <= beginXY + (endY - beginXY) / 2)
             balls.push(new_ball(mouse.x - 50, mouse.y, -100, 100));
         else
             balls.push(new_ball(mouse.x - 50, mouse.y - 50, -100, -100));

@@ -58,8 +58,14 @@ function init() {
 
         if (mouse.x <= beginXY || mouse.y <= beginXY || mouse.x >= 1280 - beginXY || mouse.y >= 720 - beginXY)
             console.log("BAKA!!");
-        else
+        else if (mouse.x <= beginXY + (endX - beginXY) / 2 && mouse.y <= beginXY + (endY - beginXY) / 2)
             balls.push(new_ball(mouse.x, mouse.y, 100, 100));
+        else if (mouse.x <= beginXY + (endX - beginXY) / 2 && mouse.y > beginXY + (endY - beginXY) / 2)
+            balls.push(new_ball(mouse.x, mouse.y - 50, 100, -100));
+        else if (mouse.x > beginXY + (endX - beginXY) / 2 && mouse.y <= beginXY + (endY - beginXY) / 2)
+            balls.push(new_ball(mouse.x - 50, mouse.y, -100, 100));
+        else
+            balls.push(new_ball(mouse.x - 50, mouse.y - 50, -100, -100));
 
         console.log((event.pageX - canvasBeginX) + " : " + (event.pageY - canvasBeginY));
     }

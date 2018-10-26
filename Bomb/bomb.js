@@ -9,8 +9,6 @@ function init() {
     var dimg = document.getElementById("d-img");
     var bomb = document.getElementById("bomb");
     var FPS = 30;
-    var canvasBeginX = 105;
-    var canvasBeginY = 38;
     var beginXY = 128.5;
     var rect_width = canvas.width - beginXY * 2;
     var rect_height = canvas.height - beginXY * 2;

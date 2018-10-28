@@ -58,7 +58,6 @@ function init() {
                 mouse.y >= ball.y && mouse.y <= ball.y + ball.size &&
                 ball.exploded === false) {
                     ball.exploded = true;
-                    ball.num_frames = 15;
                     ball.start_time = get_time() / 1000;
                     console.log(true);
                     return;
@@ -77,7 +76,7 @@ function init() {
         else
             balls.push(new_ball(mouse.x - 50, mouse.y - 50, -100, -100));
 
-        console.log((event.pageX - canvasBeginX) + " : " + (event.pageY - canvasBeginY));
+        console.log((mouse.x) + " : " + (mouse.y));
     }
 
     function draw() {

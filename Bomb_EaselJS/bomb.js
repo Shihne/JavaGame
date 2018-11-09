@@ -7,29 +7,28 @@ function init() {
         y: 0
     };
 
-    function new_ball(x, y, dx, dy) {
-        return {
-            frame_index: 0,
-            num_frames: 648,
-            num_columns: 36,
-            str_index: 0,
-            x: x,
-            y: y,
-            dx: dx,
-            dy: dy,
-            size: 50,
-            frame_size: 100,
-            exploded: false,
-            explosionX_size: 64,
-            explosionY_size: 249 / 4,
-            explosionX_frame_size: 256,
-            explosionY_frame_size: 249,
-            explosion_num_frames: 15,
-            explosion_num_columns: 5
-        };
-    }
+    var bombSpriteSheet = new createjs.SpriteSheet({
+            images: ["b.png", "d.png"],
+            frames: [
+                [0, 0, 100, 100, 0, 50, 50],
+                [0, 0, 256, 249, 1, 128, 124.5]
+            ],
+            animations: {
+                rotate: [0, 647, "rotate"],
+                explosion: [0, 15]
+            },
+            framerate: 30
+        });
 
-    var balls = [new_ball(220, 520, 100, -100), new_ball(520, 140, 100, 100), new_ball(420, 260, -100, 100)];
+    var beginRect = 128.5;
+    var WIDTH = stage.width - beginRect * 2;
+    var HEIGHT = stage.height - beginRect * 2;
+    var R = 25;
 
-
+    var field = new createjs.Container();
+    var background = new createjs.Shape();
+    background.graphics
+        .beginStroke("black")
+        .beginFill("ECF5E9")
+        .rect(beginRect, beginRect, WIDTH, HEIGHT);
 }

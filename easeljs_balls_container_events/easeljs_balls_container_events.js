@@ -46,7 +46,6 @@ function init() {
     field.addChild(background);
 
     function ball_tick(e) {
-        console.log('asdf');
         var ball = e.target; //e - информация о событии, e.target - для кого вызвано
         ball.x += ball.dx;
         ball.y += ball.dy;
@@ -69,7 +68,7 @@ function init() {
         ball.dy = 0;
         ball.expolded = true;
         //уберем шарик, но не сразу, а когда закончится анимация
-        ball.addEventListener('animationend', function() {
+        ball.addEventListener('animationend', function () {
             field.removeChild(ball);
         });
     }
@@ -90,7 +89,7 @@ function init() {
         ball.addEventListener('click', ball_click);
     }
 
-    field.addEventListener('click', function(e) {
+    field.addEventListener('click', function (e) {
         //это событие ловит все нажатия на содержимое контейнера: фон и шарики
         if (e.target === background) {
             //нажали на фон
@@ -98,6 +97,9 @@ function init() {
             add_ball(e.localX, e.localY, Math.cos(random_angle), Math.sin(random_angle));
         }
     });
+
+    field.x = 100;
+    field.y = 100;
 
     // add_ball(50, 50, 1, 1);
     // add_ball(100, 100, 1, 1);

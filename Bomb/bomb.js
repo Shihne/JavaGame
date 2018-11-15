@@ -108,9 +108,9 @@ function init() {
             if (ball.exploded === false) {
                 ball.frame_index = Math.floor((current_time_sec - animation_start_time) * FPS) % ball.num_frames;
 
-                if (ball.x >= canvas.width - beginXY - ball.size * 0.9 || ball.x <= beginXY - ball.size * 0.1)
+                if (ball.x > canvas.width - beginXY - ball.size * 0.9 || ball.x < beginXY - ball.size * 0.1)
                     ball.dx = ball.dx * (-1);
-                if (ball.y >= canvas.height - beginXY - ball.size * 0.9 || ball.y <= beginXY - ball.size * 0.1)
+                if (ball.y > canvas.height - beginXY - ball.size * 0.9 || ball.y < beginXY - ball.size * 0.1)
                     ball.dy = ball.dy * (-1);
                 ball.x += ball.dx * elapsed_time_sec;
                 ball.y += ball.dy * elapsed_time_sec;

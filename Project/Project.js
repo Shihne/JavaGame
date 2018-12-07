@@ -25,6 +25,7 @@ function init() {
     var background = new createjs.Bitmap("background.png");
     var background_WIDTH = 1920;
     var background_HEIGHT = 1080;
+    var g = 10;
     background.regY = background_HEIGHT - HEIGHT;
     background.cX = 0;
     stage.addChild(field);
@@ -34,43 +35,68 @@ function init() {
 
     function protagonist_tick(e) {
         var protagonist = e.target;
-        if (protagonist.x === 60 && protagonist_action === 'L')
+        if (protagonist.x === 60 && protagonist_direction === 'L' ||
+            protagonist.x === WIDTH - 60 && protagonist_direction === 'R')
             protagonist.x += 0;
-        else if (protagonist.x < WIDTH / 2 || (background.cX === 0 && protagonist_action === 'L'))
+        else if ((protagonist.x < WIDTH / 2 && background.cX === 0) ||
+            (protagonist.x === WIDTH / 2 && background.cX === 0 && protagonist_direction === 'L') ||
+            (protagonist.x === WIDTH / 2 && background.cX === background_WIDTH - WIDTH && protagonist_direction === 'R') ||
+            (protagonist.x > WIDTH / 2 && background.cX === background_WIDTH - WIDTH))
             protagonist.x += protagonist.dx;
-        else if (background.cX < background_WIDTH - WIDTH) {
+        else if (background.cX < background_WIDTH - WIDTH ||
+            (protagonist.x === WIDTH / 2 && background.cX === background_WIDTH - WIDTH && protagonist_direction === 'L')) {
             background.x -= protagonist.dx;
             background.cX += protagonist.dx;
-        } else if (protagonist.x === WIDTH / 2 && background.cX === background_WIDTH - WIDTH && protagonist_action === 'L') {
-            background.x += 1;
-            background.cX -= 1;
-        } else if (background.cX === background_WIDTH - WIDTH && protagonist_action === 'R')
-            protagonist.x += protagonist.dx;
+        }
+        //} else if (background.cX === background_WIDTH - WIDTH && protagonist_action === 'R')
+        //    protagonist.x += protagonist.dx;
         //else if (background.cX === background_WIDTH - WIDTH && protagonist.x > WIDTH / 2)
 
     }
 
-    var protagonist_action = '';
+    var protagonist_direction = '';
 
     function protagonist_walk(e) {
-        if (protagonist_action === 'R' || protagonist_action === 'L')
+        var new_direction = '';
+        if (e.keyCode === 68 || e.keyCode === 39) {
+            new_direction = 'R';
+        } else if (e.keyCode === 65 || e.keyCode === 37) {
+            new_direction = 'L';
+        } //else if (e.keyCode === 32)
+        else
             return;
-        if (e.keyCode === 68) {
-            protagonist_action = 'R';
-            protagonist.dx = 5;
-            protagonist.scaleX = 0.4;
-        } else if (e.keyCode === 65) {
-            protagonist_action = 'L';
-            protagonist.dx = -5;
-            protagonist.scaleX = -0.4;
-        } else return;
-        protagonist.gotoAndPlay("walk");
+
+        if (new_direction !== protagonist_direction/* && new_action !== ''*/) {
+            protagonist_direction = new_direction;
+
+            if (protagonist_direction === 'R') {
+                protagonist.dx = 5;
+                protagonist.scaleX = 0.4;
+            } else if (protagonist_direction === 'L') {
+                protagonist.dx = -5;
+                protagonist.scaleX = -0.4;
+            }
+
+            // if (protagonist_action !== '')
+            protagonist.gotoAndPlay("walk");
+        }
     }
 
-    function protagonist_stop() {
-        protagonist_action = '';
-        protagonist.dx = 0;
-        protagonist.gotoAndPlay("stand");
+    /*function protagonsit_action(e) {
+        if (e.keyCode === 32) {
+            protagonist.dy = -20;
+
+        }
+    }*/
+
+    function protagonist_stop(e) {
+        if ((e.keyCode === 68 || e.keyCode === 39) && protagonist_direction === 'R' ||
+            (e.keyCode === 65 || e.keyCode === 37) && protagonist_direction === 'L') {
+            protagonist_direction = '';
+            protagonist.dx = 0;
+            protagonist.dy = 0;
+            protagonist.gotoAndPlay("stand");
+        }
     }
 
     var protagonist = new createjs.Sprite(protagonistSpriteSheet, "stand");
@@ -81,11 +107,14 @@ function init() {
     protagonist.dx = 0;
     protagonist.addEventListener('tick', protagonist_tick);
     this.document.onkeydown = protagonist_walk;
+    this.document.onkeydown = protagonist_action;
     this.document.onkeyup = protagonist_stop;
 
 
     field.addEventListener('click', function (e) {
-        console.info(e.localX + " : " + e.localY);
+        //console.info(e.localX + " : " + e.localY);
+        console.info("protagonist.x : " + protagonist.x);
+        console.info("background.cx : " + background.cX);
     });
 
     createjs.Ticker.addEventListener('tick', stage);

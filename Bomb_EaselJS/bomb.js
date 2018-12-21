@@ -33,6 +33,8 @@ function init() {
         .beginStroke("black")
         .beginFill("#000057")
         .rect(0, 0, WIDTH, HEIGHT);
+
+
     stage.addChild(field);
     field.addChild(background);
 

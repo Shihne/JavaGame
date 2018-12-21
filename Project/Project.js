@@ -27,7 +27,6 @@ function init() {
     var background_WIDTH = 1920;
     var background_HEIGHT = 1080;
     var floors = new createjs.Shape();
-
     floors.graphics
         .beginFill('#282629')
         .rect(0, 1055, 600, 20)
@@ -45,9 +44,7 @@ function init() {
             .setStrokeStyle(3)
             .moveTo(1100, 650 + i * 50)
             .lineTo(1200, 650 + i * 50)
-
     background.addChild(stair, floors);
-
     var g = 0.1;
     var pits = {level1: [600, 800],
                 level2: [0, 950]};
@@ -61,7 +58,6 @@ function init() {
     var up = false;
 
     function protagonist_tick(e) {
-
         var protagonist = e.target;
         //console.info(protagonist.x + background.cX);
         if (protagonist.level === 1) {
@@ -87,36 +83,30 @@ function init() {
                 }
             }
         } else {
-            if (protagonist.x + background.cX > pits.level2[0] && protagonist.x + background.cX < pits.level2[1] && !falling && !jump) {
-                falling = true;
-            } else
-                falling = false;
+            falling = protagonist.x + background.cX > pits.level2[0] && protagonist.x + background.cX < pits.level2[1] && !falling && !jump;
             if (falling) {
                 protagonist.dy += g * 10;
                 protagonist.y += protagonist.dy;
                 if (protagonist.y >= 600) {
                     protagonist.dy = 0;
                     protagonist.y = 600;
+                    falling = false;
                     protagonist.level = 1;
                 }
             }
         }
-
         if (protagonist.x === 60 && protagonist_direction === 'L' ||
             protagonist.x === WIDTH - 60 && protagonist_direction === 'R') {
             protagonist.x += 0;
-
         } else if ((protagonist.x < WIDTH / 2 && background.cX === 0) ||
             (protagonist.x === WIDTH / 2 && background.cX === 0 && protagonist_direction === 'L') ||
             (protagonist.x === WIDTH / 2 && background.cX === background_WIDTH - WIDTH && protagonist_direction === 'R') ||
             (protagonist.x > WIDTH / 2 && background.cX === background_WIDTH - WIDTH)) {
             protagonist.x += protagonist.dx;
-
         } else /*if (background.cX < background_WIDTH - WIDTH ||
             (protagonist.x === WIDTH / 2 && background.cX === background_WIDTH - WIDTH && protagonist_direction === 'L'))*/ {
             background.x -= protagonist.dx;
             background.cX += protagonist.dx;
-
         }
         if (jump) {
             protagonist.y += protagonist.dy;
@@ -137,8 +127,6 @@ function init() {
                 }
             }
         }
-
-
     }
 
     var protagonist_direction = '';
@@ -147,12 +135,10 @@ function init() {
     var run = false;
     var k = 1;
 
-
     function protagonist_walk(e) {
         var new_direction = '';
         var key = e.keyCode;
         console.info("key pressed: " + key);
-
         if (key === 68 || key === 39) {
             new_direction = 'R';
             if (!jump) {
@@ -185,6 +171,7 @@ function init() {
         } else if (run && !stand) {
             choice(new_direction, "run", 10);
         }
+
         function choice(direction, animation, k) {
             protagonist_direction = direction;
             if (protagonist_direction === 'R') {
@@ -244,7 +231,6 @@ function init() {
     protagonist.addEventListener('tick', protagonist_tick);
     this.document.onkeydown = protagonist_walk;
     this.document.onkeyup = protagonist_stop;
-
 
     field.addEventListener('click', function (e) {
         //console.info(e.localX + " : " + e.localY);
